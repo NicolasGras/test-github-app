@@ -1,17 +1,20 @@
 name: Quarkus CI
-on: push
+on: pull_request
 jobs:
   my-job:
     runs-on: ubuntu-latest
-    steps:
-      - name: my-step
-        run: echo "Hello World!"
-        
+    steps:  
       - name: write file
         run: echo "This is a test file" > test-file.txt
         
       - name: Archive file
         uses: actions/upload-artifact@v3
         with:
-          name: report-issue-number-42
+          name: pull-request-number-${{ github.event.number }}
+          path: test-file.txt
+          
+      - name: Build Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-reports-test
           path: test-file.txt
